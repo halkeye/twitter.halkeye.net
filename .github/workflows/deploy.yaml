@@ -1,4 +1,4 @@
----
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Eleventy Build
 on:
   push:
@@ -13,12 +13,23 @@ jobs:
   build_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
 
-      - name: Build
-        uses: TartanLlama/actions-eleventy@v1.3
+      - uses: actions/setup-node@v4
         with:
-          install_dependencies: true
+          node-version: v18.13.0
+
+      - uses: giantswarm/install-binary-action@VERSION
+        with:
+          binary: "pagefind_extended"
+          version: "1.0.4"
+          download_url: "https://github.com/CloudCannon/pagefind/releases/download/v${version}/${binary}-v${version}-x86_64-unknown-linux-musl.tar.gz"
+          tarball_binary_path: "${binary}"
+          smoke_test: "${binary} --version"
+
+      - run: npm ci
+
+      - run: npm run build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

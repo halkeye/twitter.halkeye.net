@@ -1,5 +1,3 @@
 {
-  "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": "file:///home/halkeye/git/halkeye/twitter.halkeye.net/.github/workflows/deploy.yaml"
-  }
+  "tsserver.enable": false
 }
